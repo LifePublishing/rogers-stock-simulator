@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ROGER'S 適正株数シミュレーター</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- タイトル画像に差し替え -->
+  <div class="title-img">
+    <img src="{{ url_for('static', filename='title.png') }}" alt="タイトル画像">
+  </div>
+
+  <div class="container">
+    <div class="input-box">
+      <label>投資資金（円）：</label>
+      <input type="number" id="capital">
+    </div>
+
+    <div class="input-box">
+      <label>コア銘柄①の株価（円）：</label>
+      <input type="number" id="core1_price">
+    </div>
+
+    <div class="input-box">
+      <label>コア銘柄②の株価（円）：</label>
+      <input type="number" id="core2_price">
+    </div>
+
+    <div class="input-box">
+      <label>サテライト銘柄の株価（円）：</label>
+      <input type="number" id="satellite_price">
+    </div>
+
+    <button class="button" onclick="calculate()">計算</button>
+    <button class="button" onclick="resetFields()">リセット</button>
+
+    <div class="result-box" id="result_box"></div>
+  </div>
+
+  <script>
+    function calculate() {
+      const core1_price = parseFloat(document.getElementById("core1_price").value);
+      const core2_price = parseFloat(document.getElementById("core2_price").value);
+      const satellite_price = parseFloat(document.getElementById("satellite_price").value);
+      const capital = parseFloat(document.getElementById("capital").value);
+
+      if (isNaN(core1_price) || isNaN(core2_price) || isNaN(satellite_price) || isNaN(capital)) {
+        alert("すべての項目を正しく入力してください");
+        return;
+      }
+
+      const core1_ratio = 40;
+      const core2_ratio = 40;
+      const satellite_ratio = 20;
+
+      const calcLots = (price, ratio) => {
+        const budget = capital * (ratio / 100);
+        return Math.floor(budget / price);
+      };
+
+      const core1_lots = calcLots(core1_price, core1_ratio);
+      const core2_lots = calcLots(core2_price, core2_ratio);
+      const satellite_lots = calcLots(satellite_price, satellite_ratio);
+
+      document.getElementById("result_box").innerHTML = `
+        <div class="result">コア銘柄①：<span>${core1_lots}</span> 株</div>
+        <div class="result">コア銘柄②：<span>${core2_lots}</span> 株</div>
+        <div class="result">サテライト銘柄：<span>${satellite_lots}</span> 株</div>
+      `;
+    }
+
+    function resetFields() {
+      document.querySelectorAll("input").forEach(input => input.value = "");
+      document.getElementById("result_box").innerHTML = "";
+    }
+  </script>
+
+</body>
+</html>
