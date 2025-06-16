@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ROGER'S 適正株数計算ツール</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="title-img">
+        <img src="{{ url_for('static', filename='title.png') }}" alt="適正株数シミュレーター">
+    </div>
+    <div class="container">
+        <form method="POST">
+            <div class="input-box">
+                <label for="investment">投資資金（円）：</label>
+                <input type="number" name="investment" id="investment" required value="{{ request.form.get('investment', '') }}">
+            </div>
+            <div class="input-box">
+                <label for="core1">コア銘柄①の株価（円）：</label>
+                <input type="number" name="core1" id="core1" required value="{{ request.form.get('core1', '') }}">
+            </div>
+            <div class="input-box">
+                <label for="core2">コア銘柄②の株価（円）：</label>
+                <input type="number" name="core2" id="core2" required value="{{ request.form.get('core2', '') }}">
+            </div>
+            <div class="input-box">
+                <label for="satellite">サテライト銘柄の株価（円）：</label>
+                <input type="number" name="satellite" id="satellite" required value="{{ request.form.get('satellite', '') }}">
+            </div>
+            <div class="buttons">
+                <button type="submit" class="button">計算</button>
+                <button type="reset" class="button" onclick="window.location.href='/'">リセット</button>
+            </div>
+        </form>
+
+        <div class="input-box">
+            <label>コア銘柄①推奨株数：</label>
+            <div class="placeholder">{{ result1 or '※自動入力※' }}</div>
+        </div>
+        <div class="input-box">
+            <label>コア銘柄②推奨株数：</label>
+            <div class="placeholder">{{ result2 or '※自動入力※' }}</div>
+        </div>
+        <div class="input-box">
+            <label>サテライト銘柄の推奨株数：</label>
+            <div class="placeholder">{{ result3 or '※自動入力※' }}</div>
+        </div>
+    </div>
+</body>
+</html>
